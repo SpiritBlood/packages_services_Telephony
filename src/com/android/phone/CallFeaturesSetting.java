@@ -228,6 +228,7 @@ public class CallFeaturesSetting extends PreferenceActivity
             "button_choose_people_lookup_provider";
     private static final String BUTTON_CHOOSE_REVERSE_LOOKUP_PROVIDER =
             "button_choose_reverse_lookup_provider";
+    private static final String BUTTON_NON_INTRUSIVE_INCALL_KEY = "button_non_intrusive_incall";
 
     private Intent mContactListIntent;
 
@@ -344,6 +345,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mVoicemailNotificationVibrate;
     private SipSharedPreferences mSipSharedPreferences;
     private PreferenceScreen mButtonBlacklist;
+    private CheckBoxPreference mNonIntrusiveInCall;
     private ListPreference mFlipAction;
     private CheckBoxPreference mEnableForwardLookup;
     private CheckBoxPreference mEnablePeopleLookup;
@@ -644,6 +646,10 @@ public class CallFeaturesSetting extends PreferenceActivity
                 // This should let the preference use default behavior in the xml.
                 return false;
             }
+        } else if (preference == mNonIntrusiveInCall){
+            Settings.System.putInt(getContentResolver(), Settings.System.NON_INTRUSIVE_INCALL,
+                    mNonIntrusiveInCall.isChecked() ? 1 : 0);
+            return true;
         }
         return false;
     }
@@ -1750,6 +1756,10 @@ public class CallFeaturesSetting extends PreferenceActivity
             // should this be enabled/disabled based on a flag?
             mT9SearchInputLocale.setOnPreferenceChangeListener(this);
         }
+
+        mNonIntrusiveInCall = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_INCALL_KEY);
+        mNonIntrusiveInCall.setChecked(Settings.System.getInt(getContentResolver(),
+                Settings.System.NON_INTRUSIVE_INCALL, 1) == 0 ? false : true);
 
         removeOptionalPrefs(prefSet);
         addOptionalPrefs(prefSet);
