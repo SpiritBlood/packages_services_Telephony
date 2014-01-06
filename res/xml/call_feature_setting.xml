@@ -164,6 +164,14 @@
       android:entryValues="@array/incoming_call_style_values"
       android:persistent="false" />
 
+  <ListPreference
+      android:key="flip_action"
+      android:title="@string/flip_action_title"
+      android:dialogTitle="@string/flip_action_dialog_title"
+      android:entries="@array/flip_action_setting_entries"
+      android:entryValues="@array/flip_action_setting_values"
+      android:persistent="false" />
+
   <CheckBoxPreference
       android:key="button_play_dtmf_tone"
       android:title="@string/dtmf_tone_enable_title"
@@ -258,59 +266,59 @@
             android:targetClass="com.android.phone.CdmaCallOptions"/>
     </PreferenceScreen>
 
-  <PreferenceScreen
-      android:key="button_voicemail_category_key"
-      android:title="@string/voicemail"
-      android:persistent="false">
+    <PreferenceScreen
+        android:key="button_voicemail_category_key"
+        android:title="@string/voicemail"
+        android:persistent="false">
 
-      <CheckBoxPreference
-          android:defaultValue="false"
-          android:key="button_mwi_notification_key"
-          android:title="@string/mwi_notification_title"
-          android:persistent="false"
-          android:summary="@string/mwi_notification_summary" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="button_mwi_notification_key"
+            android:title="@string/mwi_notification_title"
+            android:persistent="false"
+            android:summary="@string/mwi_notification_summary" />
 
-      <ListPreference
-          android:key="button_voicemail_provider_key"
-          android:title="@string/voicemail_provider"
-          android:summary="@string/sum_voicemail_choose_provider"
-          android:defaultValue=""
-          android:persistent="true" />
-      <PreferenceScreen
-          android:key="button_voicemail_setting_key"
-          android:title="@string/voicemail_settings"
-          android:persistent="false">
+        <ListPreference
+            android:key="button_voicemail_provider_key"
+            android:title="@string/voicemail_provider"
+            android:summary="@string/sum_voicemail_choose_provider"
+            android:defaultValue=""
+            android:persistent="true" />
+        <PreferenceScreen
+            android:key="button_voicemail_setting_key"
+            android:title="@string/voicemail_settings"
+            android:persistent="false">
 
-          <!-- Note for all com.android.phone.EditPhoneNumberPreference objects
+            <!-- Note for all com.android.phone.EditPhoneNumberPreference objects
 
-               The last several attributes are for use with the EditText field
-               in the dialog.  These attributes are forwarded to that field
-               when the edittext is created.  The attributes include:
-               1. android:singleLine
-               2. android:autoText
-               3. android:background -->
+                 The last several attributes are for use with the EditText field
+                 in the dialog.  These attributes are forwarded to that field
+                 when the edittext is created.  The attributes include:
+                 1. android:singleLine
+                 2. android:autoText
+                 3. android:background -->
 
-          <com.android.phone.EditPhoneNumberPreference
-              android:key="button_voicemail_key"
-              android:title="@string/voicemail_settings_number_label"
-              android:persistent="false"
-              android:dialogTitle="@string/voicemail"
-              phone:confirmMode="confirm"
-              android:singleLine="true"
-              android:autoText="false" />
-      </PreferenceScreen>
+            <com.android.phone.EditPhoneNumberPreference
+                android:key="button_voicemail_key"
+                android:title="@string/voicemail_settings_number_label"
+                android:persistent="false"
+                android:dialogTitle="@string/voicemail"
+                phone:confirmMode="confirm"
+                android:singleLine="true"
+                android:autoText="false" />
+        </PreferenceScreen>
 
-      <RingtonePreference
-          android:key="button_voicemail_notification_ringtone_key"
-          android:title="@string/voicemail_notification_ringtone_title"
-          android:persistent="true"
-          android:ringtoneType="notification"
-          android:defaultValue="content://settings/system/notification_sound" />
-      <CheckBoxPreference
-          android:key="button_voicemail_notification_vibrate_key"
-          android:title="@string/voicemail_notification_vibrate_when_title"
-          android:persistent="true"
-          />
-  </PreferenceScreen>
+        <RingtonePreference
+            android:key="button_voicemail_notification_ringtone_key"
+            android:title="@string/voicemail_notification_ringtone_title"
+            android:persistent="true"
+            android:ringtoneType="notification"
+            android:defaultValue="content://settings/system/notification_sound" />
+        <CheckBoxPreference
+            android:key="button_voicemail_notification_vibrate_key"
+            android:title="@string/voicemail_notification_vibrate_when_title"
+            android:persistent="true"
+            />
+    </PreferenceScreen>
 
 </PreferenceScreen>

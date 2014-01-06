@@ -203,6 +203,8 @@ public class CallFeaturesSetting extends PreferenceActivity
     /* package */ static final String BUTTON_VOICEMAIL_NOTIFICATION_RINGTONE_KEY =
             "button_voicemail_notification_ringtone_key";
 
+    private static final String FLIP_ACTION_KEY = "flip_action";
+
     private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
 
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
@@ -342,6 +344,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mVoicemailNotificationVibrate;
     private SipSharedPreferences mSipSharedPreferences;
     private PreferenceScreen mButtonBlacklist;
+    private ListPreference mFlipAction;
     private CheckBoxPreference mEnableForwardLookup;
     private CheckBoxPreference mEnablePeopleLookup;
     private CheckBoxPreference mEnableReverseLookup;
@@ -714,6 +717,11 @@ public class CallFeaturesSetting extends PreferenceActivity
             }
         } else if (preference == mButtonSipCallOptions) {
             handleSipCallOptionsChange(objValue);
+        } else if (preference == mFlipAction) {
+            int index = mFlipAction.findIndexOfValue((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                Settings.System.CALL_FLIP_ACTION_KEY, index);
+            updateFlipActionSummary(index);
         } else if (preference == mEnableForwardLookup
                 || preference == mEnablePeopleLookup
                 || preference == mEnableReverseLookup) {
@@ -727,6 +735,13 @@ public class CallFeaturesSetting extends PreferenceActivity
         }
         // always let the preference setting proceed.
         return true;
+    }
+
+    private void updateFlipActionSummary(int value) {
+        if (mFlipAction != null) {
+            String[] summaries = getResources().getStringArray(R.array.flip_action_summary_entries);
+            mFlipAction.setSummary(getString(R.string.flip_action_summary, summaries[value]));
+        }
     }
 
     @Override
@@ -1660,6 +1675,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonNoiseSuppression = (CheckBoxPreference) findPreference(BUTTON_NOISE_SUPPRESSION_KEY);
         mButtonCallUiInBackground = (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
+        mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
         mT9SearchInputLocale = (ListPreference) findPreference(BUTTON_T9_SEARCH_INPUT_LOCALE);
         mIncomingCallStyle = (ListPreference) findPreference(BUTTON_INCOMING_CALL_STYLE);
         mButtonProximity = (CheckBoxPreference) findPreference(BUTTON_PROXIMITY_KEY);
@@ -1724,6 +1740,10 @@ public class CallFeaturesSetting extends PreferenceActivity
 
         if (mButtonCallUiInBackground != null) {
             mButtonCallUiInBackground.setOnPreferenceChangeListener(this);
+        }
+
+        if (mFlipAction != null) {
+            mFlipAction.setOnPreferenceChangeListener(this);
         }
 
         if (mT9SearchInputLocale != null) {
@@ -1897,6 +1917,13 @@ public class CallFeaturesSetting extends PreferenceActivity
             int callUiInBackground = Settings.System.getInt(getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND, 0);
             mButtonCallUiInBackground.setChecked(callUiInBackground != 0);
+        }
+
+        if (mFlipAction != null) {
+            int flipAction = Settings.System.getInt(getContentResolver(),
+                    Settings.System.CALL_FLIP_ACTION_KEY, 2);
+            mFlipAction.setValue(String.valueOf(flipAction));
+            updateFlipActionSummary(flipAction);
         }
 
         if (mButtonProximity != null) {
