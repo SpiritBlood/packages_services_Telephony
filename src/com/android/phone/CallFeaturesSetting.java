@@ -207,6 +207,8 @@ public class CallFeaturesSetting extends PreferenceActivity
 
     private static final String BUTTON_CALL_UI_IN_BACKGROUND = "bg_incall_screen";
 
+    private static final String DIALKEY_PADDING = "dialkey_padding";
+
     private static final String VM_NUMBERS_SHARED_PREFERENCES_NAME = "vm_numbers";
 
     private static final String BUTTON_SIP_CALL_OPTIONS =
@@ -333,6 +335,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private CheckBoxPreference mButtonAutoRetry;
     private CheckBoxPreference mButtonHAC;
     private CheckBoxPreference mButtonCallUiInBackground;
+    private ListPreference mDialkeyPadding;
     private ListPreference mButtonDTMF;
     private ListPreference mButtonTTY;
     private CheckBoxPreference mButtonNoiseSuppression;
@@ -684,6 +687,10 @@ public class CallFeaturesSetting extends PreferenceActivity
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND,
                     (Boolean) objValue ? 1 : 0);
+        } else if (preference == mDialkeyPadding) {
+            final int val = Integer.valueOf((String) objValue);
+            Settings.System.putInt(getContentResolver(),
+                Settings.System.DIALKEY_PADDING, val);
         } else if (preference == mButtonProximity) {
             boolean checked = (Boolean) objValue;
             Settings.System.putInt(mPhone.getContext().getContentResolver(),
@@ -1680,6 +1687,7 @@ public class CallFeaturesSetting extends PreferenceActivity
         mButtonTTY = (ListPreference) findPreference(BUTTON_TTY_KEY);
         mButtonNoiseSuppression = (CheckBoxPreference) findPreference(BUTTON_NOISE_SUPPRESSION_KEY);
         mButtonCallUiInBackground = (CheckBoxPreference) findPreference(BUTTON_CALL_UI_IN_BACKGROUND);
+        mDialkeyPadding = (ListPreference) findPreference(DIALKEY_PADDING);
         mButtonBlacklist = (PreferenceScreen) findPreference(BUTTON_BLACKLIST);
         mFlipAction = (ListPreference) findPreference(FLIP_ACTION_KEY);
         mT9SearchInputLocale = (ListPreference) findPreference(BUTTON_T9_SEARCH_INPUT_LOCALE);
@@ -1746,6 +1754,10 @@ public class CallFeaturesSetting extends PreferenceActivity
 
         if (mButtonCallUiInBackground != null) {
             mButtonCallUiInBackground.setOnPreferenceChangeListener(this);
+        }
+
+        if (mDialkeyPadding != null) {
+            mDialkeyPadding.setOnPreferenceChangeListener(this);
         }
 
         if (mFlipAction != null) {
@@ -1927,6 +1939,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             int callUiInBackground = Settings.System.getInt(getContentResolver(),
                     Settings.System.CALL_UI_IN_BACKGROUND, 0);
             mButtonCallUiInBackground.setChecked(callUiInBackground != 0);
+        }
+
+        if (mDialkeyPadding != null) {
+            int dialkeyPadding = Settings.System.getInt(getContentResolver(),
+                    Settings.System.DIALKEY_PADDING, 0);
+            mDialkeyPadding.setValue(String.valueOf(dialkeyPadding));
         }
 
         if (mFlipAction != null) {
