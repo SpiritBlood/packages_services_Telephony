@@ -184,13 +184,6 @@
       android:persistent="false"
       android:summary="@string/proximity_on_summary" />
 
-  <CheckBoxPreference
-      android:key="bg_incall_screen"
-      android:title="@string/bg_incall"
-      android:persistent="false"
-      android:defaultValue="false"
-      android:summary="@string/bg_incall_summary"/>
-
   <PreferenceScreen
       android:key="button_respond_via_sms_key"
       android:title="@string/respond_via_sms_setting_title"
@@ -325,6 +318,13 @@
         android:key="preference_category_interface_key"
         android:title="@string/preference_category_interface"
         android:persistent="false">
+
+        <CheckBoxPreference
+            android:key="bg_incall_screen"
+            android:title="@string/bg_incall"
+            android:persistent="false"
+            android:defaultValue="false"
+            android:summary="@string/bg_incall_summary"/>
 
         <CheckBoxPreference
             android:key="button_non_intrusive_incall"
