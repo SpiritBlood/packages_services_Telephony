@@ -33,7 +33,10 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 import android.media.AudioManager;
@@ -319,6 +322,9 @@ public class CallFeaturesSetting extends PreferenceActivity
     // Blacklist support
     private static final String BUTTON_BLACKLIST = "button_blacklist";
 
+    // Call recording format
+    private static final String CALL_RECORDING_FORMAT = "call_recording_format";
+
     private EditPhoneNumberPreference mSubMenuVoicemailSettings;
 
     private Runnable mRingtoneLookupRunnable;
@@ -370,6 +376,7 @@ public class CallFeaturesSetting extends PreferenceActivity
     private ListPreference mT9SearchInputLocale;
     private CheckBoxPreference mButtonProximity;
     private CheckBoxPreference mAllowCallRecording;
+    private ListPreference mCallRecordingFormat;
 
     private class VoiceMailProvider {
         public VoiceMailProvider(String name, Intent intent) {
@@ -818,6 +825,11 @@ public class CallFeaturesSetting extends PreferenceActivity
             saveLookupProviderSetting(preference, (String) objValue);
         } else if (preference == mT9SearchInputLocale) {
             saveT9SearchInputLocale(preference, (String) objValue);
+        } else if (preference == mCallRecordingFormat) {
+            int value = Integer.valueOf((String) objValue);
+            int index = mCallRecordingFormat.findIndexOfValue((String) objValue);
+            Settings.System.putInt(getContentResolver(), Settings.System.CALL_RECORDING_FORMAT, value);
+            mCallRecordingFormat.setSummary(mCallRecordingFormat.getEntries()[index]);
         }
         // always let the preference setting proceed.
         return true;
@@ -2597,6 +2609,9 @@ public class CallFeaturesSetting extends PreferenceActivity
                     (CheckBoxPreference) findPreference(BUTTON_VOICEMAIL_NOTIFICATION_VIBRATE_KEY);
             PhoneSettings.setPreferenceKeyForSubscription(mVoicemailNotificationVibrate, mSubscription);
             initVoiceMailProviders();
+
+        mCallRecordingFormat = (ListPreference) findPreference(CALL_RECORDING_FORMAT);
+
         }
         // check the intent that started this activity and pop up the voicemail
         // dialog if we've been asked to.
@@ -2802,6 +2817,12 @@ public class CallFeaturesSetting extends PreferenceActivity
             } else {
                 throw new IllegalStateException("Unexpected phone type: " + phoneType);
             }
+        }
+        if (mCallRecordingFormat != null) {
+            int format = Settings.System.getInt(getContentResolver(), Settings.System.CALL_RECORDING_FORMAT, 0);
+            mCallRecordingFormat.setValue(String.valueOf(format));
+            mCallRecordingFormat.setSummary(mCallRecordingFormat.getEntry());
+            mCallRecordingFormat.setOnPreferenceChangeListener(this);
         }
     }
 

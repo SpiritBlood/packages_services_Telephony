@@ -349,11 +349,19 @@
             android:persistent="false"
             android:defaultValue="false" />
 
-    <CheckBoxPreference
-        android:key="button_allow_call_recording"
-        android:title="@string/allow_call_recording_title"
-        android:summary="@string/allow_call_recording_summary"
-        android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="button_allow_call_recording"
+            android:title="@string/allow_call_recording_title"
+            android:summary="@string/allow_call_recording_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="call_recording_format"
+            android:title="@string/call_recording_format"
+            android:summary="%s"
+            android:entries="@array/call_recording_encoder_entries"
+            android:entryValues="@array/call_recording_encoder_values"
+            android:persistent="false" />
     </PreferenceCategory>
 
 </PreferenceScreen>
