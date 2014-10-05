@@ -654,8 +654,9 @@ public class CallFeaturesSetting extends PreferenceActivity
                 return false;
             }
         } else if (preference == mNonIntrusiveInCall){
-            Settings.System.putInt(getContentResolver(), Settings.System.NON_INTRUSIVE_INCALL,
-                    mNonIntrusiveInCall.isChecked() ? 1 : 0);
+            boolean checked = ((CheckBoxPreference)preference).isChecked();
+            Settings.System.putInt(getContentResolver(),
+                    Settings.System.NON_INTRUSIVE_INCALL, checked ? 1 : 0);
             return true;
         }
         return false;
@@ -1783,8 +1784,8 @@ public class CallFeaturesSetting extends PreferenceActivity
         }
 
         mNonIntrusiveInCall = (CheckBoxPreference) findPreference(BUTTON_NON_INTRUSIVE_INCALL_KEY);
-        mNonIntrusiveInCall.setChecked(Settings.System.getInt(getContentResolver(),
-                Settings.System.NON_INTRUSIVE_INCALL, 1) == 0 ? false : true);
+        mNonIntrusiveInCall.setChecked((Settings.System.getInt(getContentResolver(),
+                Settings.System.NON_INTRUSIVE_INCALL, 0) == 1));
 
         removeOptionalPrefs(prefSet);
         addOptionalPrefs(prefSet);
