@@ -194,6 +194,13 @@
       android:defaultValue="false" />
 
   <CheckBoxPreference
+      android:key="prox_auto_speaker_incall_only"
+      android:title="@string/prox_auto_speaker_incall_only_title"
+      android:summary="@string/prox_auto_speaker_incall_only_summary"
+      android:persistent="false"
+      android:defaultValue="false" />
+
+  <CheckBoxPreference
       android:key="button_proximity_key"
       android:title="@string/proximity_mode_title"
       android:persistent="false"
